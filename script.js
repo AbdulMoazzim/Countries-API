@@ -8,12 +8,12 @@ let cards = `<div class="card" style="width: 18rem;">
 </div>`;
 
 let main = document.querySelector('.countries');
-
+let newArray = [];
 let api = fetch(' https://restcountries.com/v3.1/all');
 
 api.then(response => response.json())
 .then((response)=>{
-    console.log(response);
+
     let length = response.length;
     for (let i = 0; i < length; i++){
         main.insertAdjacentHTML('afterbegin',`<div class="card" style="width: 18rem;">
@@ -27,5 +27,38 @@ api.then(response => response.json())
     </ul
   </div>
 </div>`)
+  }
+  let search = document.querySelector('#search');
+  search.addEventListener('input',(event)=>{
+    newArray = [];
+    for (let i = 0; i < length; i++){
+      if (response[i].name.common.toLowerCase().includes(event.target.value)){
+        newArray.push(response[i]);
+      }
     }
+    displayFilteredCountries(newArray);
+  })
 })
+
+function displayFilteredCountries(array) {
+  if (newArray.length > 0) {
+    main.innerHTML = '';
+  }
+  for (let i = 0; i < array.length; i++){
+    main.insertAdjacentHTML('afterbegin',`<div class="card" style="width: 18rem;">
+<img src="${array[i].flags.png}" alt="countries">
+<div class="card-body">
+<h5 class="card-title">${array[i].name.common}</h5>
+<ul>
+  <li><span>Population:</span>${array[i].population}</li>
+  <li><span>Region:</span>${array[i].region}</li>
+  <li><span>Capital:</span>${array[i].capital}</li>
+</ul
+</div>
+</div>`)
+}
+}
+
+// Dark Mode
+
+let darkMode = document.querySelector('#DarkLight')

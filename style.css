@@ -2,8 +2,14 @@
     margin: 0;
     padding: 0;
     font-family: sans-serif;
+    transition: color 0.5s linear, background-color 0.5s linear;
 }
-
+.wht-text {
+    color: white;
+}
+.bg-black {
+    background-color: black;
+}
 .nav {
     height: 60px;
     border-bottom: 1px solid black;
