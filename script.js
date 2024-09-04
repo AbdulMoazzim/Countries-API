@@ -7,16 +7,22 @@ let cards = `<div class="card" style="width: 18rem;">
   </div>
 </div>`;
 
-let main = document.querySelector('.countries');
-let newArray = [];
-let api = fetch(' https://restcountries.com/v3.1/all');
+let main = document.querySelector(".countries");
+let region = document.querySelector("#region");
+let filterArray = [];
+let selectedArray = [];
+let search = document.querySelector("#search");
+let api = fetch(" https://restcountries.com/v3.1/all");
 
-api.then(response => response.json())
-.then((response)=>{
-
+api
+  .then((response) => response.json())
+  .then((response) => {
+    console.log(response);
     let length = response.length;
-    for (let i = 0; i < length; i++){
-        main.insertAdjacentHTML('afterbegin',`<div class="card" style="width: 18rem;">
+    for (let i = 0; i < length; i++) {
+      main.insertAdjacentHTML(
+        "afterbegin",
+        `<div class="card" style="width: 18rem;">
   <img src="${response[i].flags.png}" alt="countries">
   <div class="card-body">
     <h5 class="card-title">${response[i].name.common}</h5>
@@ -26,26 +32,61 @@ api.then(response => response.json())
       <li><span>Capital:</span>${response[i].capital}</li>
     </ul
   </div>
-</div>`)
-  }
-  let search = document.querySelector('#search');
-  search.addEventListener('input',(event)=>{
-    newArray = [];
-    for (let i = 0; i < length; i++){
-      if (response[i].name.common.toLowerCase().includes(event.target.value)){
-        newArray.push(response[i]);
-      }
+</div>`
+      );
     }
-    displayFilteredCountries(newArray);
-  })
-})
+
+    search.addEventListener("input", (event) => {
+      if (region.value === "" && search.value === "") { 
+        displayFilteredCountries(response);
+      }
+      else{   
+        newArray = [];
+        if (region.value === "") {
+          for (let i = 0; i < length; i++) {
+            if (response[i].name.common.toLowerCase().includes(event.target.value)) 
+              {
+              newArray.push(response[i]);
+            }
+          }
+          displayFilteredCountries(newArray);
+        } else {
+          for (let i = 0; i < selectedArray.length; i++) {
+            if (selectedArray[i].name.common.toLowerCase().includes(event.target.value)) {
+              newArray.push(selectedArray[i]);
+            }
+          }
+          displayFilteredCountries(newArray);
+        }
+      }
+    });
+
+
+    region.addEventListener("change", () => {
+      if (region.value === "" && search.value === "") { 
+        displayFilteredCountries(response);
+      }else{
+        selectedArray = [];
+        for (let i = 0; i < length; i++) {
+          if (region.value === response[i].continents[0]) {
+            selectedArray.push(response[i]);
+          }
+        }
+        displayFilteredCountries(selectedArray);
+      }
+    });
+  });
 
 function displayFilteredCountries(array) {
-  if (newArray.length > 0) {
-    main.innerHTML = '';
+  if (array.length > 0) {
+    main.innerHTML = "";
+  } else {
+    main.innerHTML = "<h1>No Such Countries!</h2>";
   }
-  for (let i = 0; i < array.length; i++){
-    main.insertAdjacentHTML('afterbegin',`<div class="card" style="width: 18rem;">
+  for (let i = 0; i < array.length; i++) {
+    main.insertAdjacentHTML(
+      "afterbegin",
+      `<div class="card" style="width: 18rem;">
 <img src="${array[i].flags.png}" alt="countries">
 <div class="card-body">
 <h5 class="card-title">${array[i].name.common}</h5>
@@ -55,10 +96,25 @@ function displayFilteredCountries(array) {
   <li><span>Capital:</span>${array[i].capital}</li>
 </ul
 </div>
-</div>`)
-}
+</div>`
+    );
+  }
 }
 
 // Dark Mode
-
-let darkMode = document.querySelector('#DarkLight')
+let children = document.body.children;
+let cardBody = document.querySelectorAll('.card');
+let darkMode = document.querySelector("#DarkLight");
+darkMode.addEventListener('click',()=>{
+  document.querySelector('body').classList.toggle('blue');
+  search.classList.toggle('blue');
+  region.classList.toggle('blue');
+  region.classList.toggle('white');
+  
+  Array.from(children).forEach((val)=>{
+    val.classList.toggle('white');
+  })
+  // Array.from(cardBody).forEach((val)=>{
+  //   val.classList.toggle('white');
+  // })
+})

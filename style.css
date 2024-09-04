@@ -42,7 +42,7 @@
     align-items: center;
     justify-content: space-between;
     display: flex;
-    border: 1px solid black;
+    border: 1px solid;
 }
 .filter2 select {
     border-radius: 10px;
@@ -72,4 +72,12 @@
 .card-body ul{
     padding: 10px 0;
     list-style: none;
+}
+
+.blue {
+    background-color: #2b343c;
+}
+.white,input::placeholder,#border-white {
+    border: white;
+    color: white;
 }
