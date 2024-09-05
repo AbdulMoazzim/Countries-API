@@ -67,6 +67,7 @@ api
         }
         cardBody = document.body.querySelectorAll('.card-body');
         checkingModeForCards(cardBody);
+        countryInfo(cardBody,newArray.length, newArray);
       }
     });
 
@@ -85,6 +86,8 @@ api
       }
       cardBody = document.body.querySelectorAll('.card-body');
       checkingModeForCards(cardBody);
+      countryInfo(cardBody,selectedArray.length, selectedArray);
+
     });
 
     // darkmode checking
@@ -117,6 +120,7 @@ api
         val.classList.add('white');
         val.classList.add('blue');
       })
+      countryInfo(cardBody,length,response);
 }
   });
 
@@ -144,6 +148,20 @@ function displayFilteredCountries(array) {
 </div>`
     );
   }
+}
+
+//Storing country info
+function countryInfo(cardBody,length,array){
+  cardBody.forEach((val)=>{
+    val.addEventListener('click',()=>{
+      for (let i = 0; i < length; i++) {
+        if (array[i].name.common === val.children[0].innerText) {
+          storage.setItem('mycountry',JSON.stringify(array[i]));
+          location.href="displaypage.html";
+        }
+      }
+    })
+  })
 }
 
 
