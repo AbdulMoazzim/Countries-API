@@ -7,6 +7,7 @@ let cards = `<div class="card" style="width: 18rem;">
   </div>
 </div>`;
 
+let cardBody;
 let main = document.querySelector(".countries");
 let region = document.querySelector("#region");
 let filterArray = [];
@@ -35,7 +36,8 @@ api
 </div>`
       );
     }
-
+    
+    cardBody = document.body.querySelectorAll('.card-body');
     search.addEventListener("input", (event) => {
       if (region.value === "" && search.value === "") { 
         displayFilteredCountries(response);
@@ -58,6 +60,7 @@ api
           }
           displayFilteredCountries(newArray);
         }
+        cardBody = document.body.querySelectorAll('.card-body');
       }
     });
 
@@ -74,6 +77,7 @@ api
         }
         displayFilteredCountries(selectedArray);
       }
+      cardBody = document.body.querySelectorAll('.card-body');
     });
   });
 
@@ -103,18 +107,20 @@ function displayFilteredCountries(array) {
 
 // Dark Mode
 let children = document.body.children;
-let cardBody = document.querySelectorAll('.card');
 let darkMode = document.querySelector("#DarkLight");
+
 darkMode.addEventListener('click',()=>{
   document.querySelector('body').classList.toggle('blue');
   search.classList.toggle('blue');
   region.classList.toggle('blue');
   region.classList.toggle('white');
+  region.classList.toggle('border-white');
   
   Array.from(children).forEach((val)=>{
     val.classList.toggle('white');
   })
-  // Array.from(cardBody).forEach((val)=>{
-  //   val.classList.toggle('white');
-  // })
+  Array.from(cardBody).forEach((val)=>{
+    val.classList.toggle('white');
+    val.classList.toggle('blue');
+  })
 })

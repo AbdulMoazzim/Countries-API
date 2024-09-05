@@ -24,11 +24,11 @@
 }
 
 .filters {
+    flex-wrap: wrap;
     margin-top: 40px;
 }
 .filter1 input {
     padding: 10px;
-    width: 300px;
     border: 0;
     font-size: 18px;
 }
@@ -54,7 +54,7 @@
     margin: 50px auto;
     width: 80vw;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap;
 }
 .card img {
@@ -80,4 +80,25 @@
 .white,input::placeholder,#border-white {
     border: white;
     color: white;
+}
+
+.border-white {
+    border: 1px solid white;
+}
+
+@media screen and (max-width: 700px) {
+    .filters {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .filters div {
+        margin: 8px 0;
+    }
+    .filter1 {
+        font-size: 14px;
+    }
+    .nav h1 {
+        font-size: 16px;
+    }
 }
