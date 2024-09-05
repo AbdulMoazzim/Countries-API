@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     font-family: sans-serif;
-    transition: color 0.5s linear, background-color 0.5s linear;
+    transition: color 0.2s linear, background-color 0.2s linear;
 }
 .wht-text {
     color: white;
@@ -14,6 +14,10 @@
     height: 60px;
     border-bottom: 1px solid black;
     box-shadow: 0px 1px 20px 0px black;
+}
+
+.mode,.card {
+    cursor: pointer;
 }
 
 .nav, .filters {
@@ -52,7 +56,6 @@
 
 .countries {
     margin: 50px auto;
-    width: 80vw;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -62,6 +65,7 @@
     border-radius: 10px 10px 0 0;
 }
 .card {
+    padding: 2px;
     border-radius: 10px;
     margin: 20px;
 }
@@ -93,12 +97,30 @@
         align-items: center;
     }
     .filters div {
+        width: 50vw;
         margin: 8px 0;
+        display: flex;
+        justify-content: center;
     }
     .filter1 {
+        padding: 10px 20px;
         font-size: 14px;
     }
     .nav h1 {
+        margin: 0;
         font-size: 16px;
+    }
+    .filter1 input {
+        padding: 0 20px;
+        width: 40vw;
+    }
+    .filter2 select{
+        width: 50vw;
+        font-size: 14px;
+    }
+}
+@media screen and (max-width: 700px) {
+    .nav h1 {
+        display: none;
     }
 }

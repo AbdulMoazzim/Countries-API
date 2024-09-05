@@ -8,17 +8,20 @@ let cards = `<div class="card" style="width: 18rem;">
 </div>`;
 
 let cardBody;
+let storage = localStorage;
 let main = document.querySelector(".countries");
 let region = document.querySelector("#region");
 let filterArray = [];
 let selectedArray = [];
 let search = document.querySelector("#search");
+
+// Fetching API
 let api = fetch(" https://restcountries.com/v3.1/all");
 
+// Displaying cards from response
 api
   .then((response) => response.json())
   .then((response) => {
-    console.log(response);
     let length = response.length;
     for (let i = 0; i < length; i++) {
       main.insertAdjacentHTML(
@@ -37,6 +40,8 @@ api
       );
     }
     
+
+    //Input Search
     cardBody = document.body.querySelectorAll('.card-body');
     search.addEventListener("input", (event) => {
       if (region.value === "" && search.value === "") { 
@@ -61,10 +66,11 @@ api
           displayFilteredCountries(newArray);
         }
         cardBody = document.body.querySelectorAll('.card-body');
+        checkingModeForCards(cardBody);
       }
     });
 
-
+    //Region search
     region.addEventListener("change", () => {
       if (region.value === "" && search.value === "") { 
         displayFilteredCountries(response);
@@ -78,9 +84,44 @@ api
         displayFilteredCountries(selectedArray);
       }
       cardBody = document.body.querySelectorAll('.card-body');
+      checkingModeForCards(cardBody);
     });
+
+    // darkmode checking
+    if (JSON.parse(storage.getItem('val')) === 0){
+      document.querySelector('body').classList.remove('blue');
+      search.classList.remove('blue');
+      region.classList.remove('blue');
+      region.classList.remove('white');
+      region.classList.remove('border-white');
+      
+      Array.from(children).forEach((val)=>{
+        val.classList.remove('white');
+      })
+      Array.from(cardBody).forEach((val)=>{
+        val.classList.add('white');
+        val.classList.add('blue');
+      })
+      
+    }else{
+      document.querySelector('body').classList.add('blue');
+      search.classList.add('blue');
+      region.classList.add('blue');
+      region.classList.add('white');
+      region.classList.add('border-white');
+      
+      Array.from(children).forEach((val)=>{
+        val.classList.add('white');
+      })
+      Array.from(cardBody).forEach((val)=>{
+        val.classList.add('white');
+        val.classList.add('blue');
+      })
+}
   });
 
+
+// Display Function
 function displayFilteredCountries(array) {
   if (array.length > 0) {
     main.innerHTML = "";
@@ -105,22 +146,56 @@ function displayFilteredCountries(array) {
   }
 }
 
+
+// card mode display
+function checkingModeForCards(){
+  if (JSON.parse(storage.getItem('val')) === 0){
+    Array.from(cardBody).forEach((val)=>{
+      val.classList.remove('white');
+      val.classList.remove('blue');
+    })
+  } else {
+    Array.from(cardBody).forEach((val)=>{
+      val.classList.add('white');
+      val.classList.add('blue');
+    })
+  }
+}
+
 // Dark Mode
 let children = document.body.children;
 let darkMode = document.querySelector("#DarkLight");
 
 darkMode.addEventListener('click',()=>{
-  document.querySelector('body').classList.toggle('blue');
-  search.classList.toggle('blue');
-  region.classList.toggle('blue');
-  region.classList.toggle('white');
-  region.classList.toggle('border-white');
-  
-  Array.from(children).forEach((val)=>{
-    val.classList.toggle('white');
-  })
-  Array.from(cardBody).forEach((val)=>{
-    val.classList.toggle('white');
-    val.classList.toggle('blue');
-  })
+  if (JSON.parse(storage.getItem('val')) === 1){
+    storage.setItem('val',JSON.stringify(0))
+    document.querySelector('body').classList.remove('blue');
+    search.classList.remove('blue');
+    region.classList.remove('blue');
+    region.classList.remove('white');
+    region.classList.remove('border-white');
+    
+    Array.from(children).forEach((val)=>{
+      val.classList.remove('white');
+    })
+    Array.from(cardBody).forEach((val)=>{
+      val.classList.remove('white');
+      val.classList.remove('blue');
+    })
+  }else{
+    storage.setItem('val',JSON.stringify(1))
+    document.querySelector('body').classList.add('blue');
+    search.classList.add('blue');
+    region.classList.add('blue');
+    region.classList.add('white');
+    region.classList.add('border-white');
+    
+    Array.from(children).forEach((val)=>{
+      val.classList.add('white');
+    })
+    Array.from(cardBody).forEach((val)=>{
+      val.classList.add('white');
+      val.classList.add('blue');
+    })
+  }
 })
