@@ -8,6 +8,7 @@ let cards = `<div class="card" style="width: 18rem;">
 </div>`;
 
 let cardBody;
+let card;
 let storage = localStorage;
 let main = document.querySelector(".countries");
 let region = document.querySelector("#region");
@@ -43,6 +44,7 @@ api
 
     //Input Search
     cardBody = document.body.querySelectorAll('.card-body');
+    card = document.body.querySelectorAll('.card');
     search.addEventListener("input", (event) => {
       if (region.value === "" && search.value === "") { 
         displayFilteredCountries(response);
@@ -66,8 +68,9 @@ api
           displayFilteredCountries(newArray);
         }
         cardBody = document.body.querySelectorAll('.card-body');
+        card = document.body.querySelectorAll('.card');
         checkingModeForCards(cardBody);
-        countryInfo(cardBody,newArray.length, newArray);
+        countryInfo(card,newArray.length, newArray);
       }
     });
 
@@ -85,8 +88,9 @@ api
         displayFilteredCountries(selectedArray);
       }
       cardBody = document.body.querySelectorAll('.card-body');
+      card = document.body.querySelectorAll('.card');
       checkingModeForCards(cardBody);
-      countryInfo(cardBody,selectedArray.length, selectedArray);
+      countryInfo(card,selectedArray.length, selectedArray);
 
     });
 
@@ -97,14 +101,16 @@ api
       region.classList.remove('blue');
       region.classList.remove('white');
       region.classList.remove('border-white');
+      search.classList.remove('white');
       
       Array.from(children).forEach((val)=>{
         val.classList.remove('white');
       })
       Array.from(cardBody).forEach((val)=>{
-        val.classList.add('white');
-        val.classList.add('blue');
+        val.classList.remove('white');
+        val.classList.remove('blue');
       })
+      countryInfo(card,length,response);
       
     }else{
       document.querySelector('body').classList.add('blue');
@@ -112,6 +118,7 @@ api
       region.classList.add('blue');
       region.classList.add('white');
       region.classList.add('border-white');
+      search.classList.add('white');
       
       Array.from(children).forEach((val)=>{
         val.classList.add('white');
@@ -120,7 +127,7 @@ api
         val.classList.add('white');
         val.classList.add('blue');
       })
-      countryInfo(cardBody,length,response);
+      countryInfo(card,length,response);
 }
   });
 
@@ -151,18 +158,19 @@ function displayFilteredCountries(array) {
 }
 
 //Storing country info
-function countryInfo(cardBody,length,array){
-  cardBody.forEach((val)=>{
+function countryInfo(card,length,array){
+  card.forEach((val)=>{
     val.addEventListener('click',()=>{
       for (let i = 0; i < length; i++) {
-        if (array[i].name.common === val.children[0].innerText) {
+        if (array[i].name.common === val.children[1].children[0].innerText) {
           storage.setItem('mycountry',JSON.stringify(array[i]));
-          location.href="displaypage.html";
+          location.href="DisplayPage/displaypage.html";
         }
       }
     })
   })
 }
+
 
 
 // card mode display
@@ -191,6 +199,7 @@ darkMode.addEventListener('click',()=>{
     search.classList.remove('blue');
     region.classList.remove('blue');
     region.classList.remove('white');
+    search.classList.remove('white');
     region.classList.remove('border-white');
     
     Array.from(children).forEach((val)=>{
@@ -206,6 +215,7 @@ darkMode.addEventListener('click',()=>{
     search.classList.add('blue');
     region.classList.add('blue');
     region.classList.add('white');
+    search.classList.add('white');
     region.classList.add('border-white');
     
     Array.from(children).forEach((val)=>{

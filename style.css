@@ -81,9 +81,11 @@
 .blue {
     background-color: #2b343c;
 }
-.white,input::placeholder,#border-white {
-    border: white;
+.white,input::placeholder{
     color: white;
+}
+#border-white {
+    border: white;
 }
 
 .border-white {

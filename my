@@ -1,0 +1,12 @@
+function countryInfo(card,length,array){
+  card.forEach((val)=>{
+    val.addEventListener('click',()=>{
+      for (let i = 0; i < length; i++) {
+        if (array[i].name.common === card[0].children[1].children[0].innerText) {
+          storage.setItem('mycountry',JSON.stringify(array[i]));
+          location.href="DisplayPage/displaypage.html";
+        }
+      }
+    })
+  })
+}
