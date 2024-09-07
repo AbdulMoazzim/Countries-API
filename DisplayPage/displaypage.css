@@ -28,7 +28,7 @@
 
 .info h1{
     font-weight: 700;
-    padding-bottom: 60px;
+    padding-bottom: 35px;
 }
 ul {
     padding: 0;
@@ -57,7 +57,7 @@ ul {
     }
 }
 
-@media screen and (max-width: 300px) {
+@media screen and (max-width: 500px) {
     .back {
         margin: 50px 20px;
     }

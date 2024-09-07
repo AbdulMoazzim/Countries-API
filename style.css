@@ -81,7 +81,7 @@
 .blue {
     background-color: #2b343c;
 }
-.white,input::placeholder{
+.white{
     color: white;
 }
 #border-white {
@@ -99,10 +99,13 @@
         align-items: center;
     }
     .filters div {
-        width: 50vw;
+        width: 75vw;
         margin: 8px 0;
         display: flex;
         justify-content: center;
+    }
+    .filter1 input::placeholder {
+        font-size: 12px;     
     }
     .filter1 {
         padding: 10px 20px;
@@ -114,14 +117,14 @@
     }
     .filter1 input {
         padding: 0 20px;
-        width: 40vw;
+        width: 50vw;
     }
     .filter2 select{
         width: 50vw;
         font-size: 14px;
     }
 }
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 370px) {
     .nav h1 {
         display: none;
     }

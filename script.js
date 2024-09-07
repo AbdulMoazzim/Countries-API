@@ -1,12 +1,3 @@
-let cards = `<div class="card" style="width: 18rem;">
-  <img src="..." class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
-  </div>
-</div>`;
-
 let cardBody;
 let card;
 let storage = localStorage;
@@ -24,23 +15,7 @@ api
   .then((response) => response.json())
   .then((response) => {
     let length = response.length;
-    for (let i = 0; i < length; i++) {
-      main.insertAdjacentHTML(
-        "afterbegin",
-        `<div class="card" style="width: 18rem;">
-  <img src="${response[i].flags.png}" alt="countries">
-  <div class="card-body">
-    <h5 class="card-title">${response[i].name.common}</h5>
-    <ul>
-      <li><span>Population:</span>${response[i].population}</li>
-      <li><span>Region:</span>${response[i].region}</li>
-      <li><span>Capital:</span>${response[i].capital}</li>
-    </ul
-  </div>
-</div>`
-      );
-    }
-    
+    displayFilteredCountries(response);
 
     //Input Search
     cardBody = document.body.querySelectorAll('.card-body');
@@ -53,7 +28,7 @@ api
         newArray = [];
         if (region.value === "") {
           for (let i = 0; i < length; i++) {
-            if (response[i].name.common.toLowerCase().includes(event.target.value)) 
+            if (response[i].name.common.toLowerCase().includes(event.target.value.toLowerCase())) 
               {
               newArray.push(response[i]);
             }
@@ -61,17 +36,17 @@ api
           displayFilteredCountries(newArray);
         } else {
           for (let i = 0; i < selectedArray.length; i++) {
-            if (selectedArray[i].name.common.toLowerCase().includes(event.target.value)) {
+            if (selectedArray[i].name.common.toLowerCase().includes(event.target.value.toLowerCase())) {
               newArray.push(selectedArray[i]);
             }
           }
           displayFilteredCountries(newArray);
         }
-        cardBody = document.body.querySelectorAll('.card-body');
-        card = document.body.querySelectorAll('.card');
-        checkingModeForCards(cardBody);
-        countryInfo(card,newArray.length, newArray);
       }
+      cardBody = document.body.querySelectorAll('.card-body');
+      card = document.body.querySelectorAll('.card');
+      checkingModeForCards(cardBody);
+      countryInfo(card,newArray.length, newArray);
     });
 
     //Region search
@@ -147,9 +122,9 @@ function displayFilteredCountries(array) {
 <div class="card-body">
 <h5 class="card-title">${array[i].name.common}</h5>
 <ul>
-  <li><span>Population:</span>${array[i].population}</li>
-  <li><span>Region:</span>${array[i].region}</li>
-  <li><span>Capital:</span>${array[i].capital}</li>
+  <li><span>Population : </span>${populationDisplay(array[i])}</li>
+  <li><span>Region : </span>${array[i].region}</li>
+  <li><span>Capital : </span>${array[i].capital}</li>
 </ul
 </div>
 </div>`
@@ -171,7 +146,26 @@ function countryInfo(card,length,array){
   })
 }
 
-
+//Population display function
+function populationDisplay(array){
+  let population = String(array.population);
+  let len = population.length;
+  let count = 0;
+  let newString = '';
+  for (let i = len - 1; i > -1; i--){
+    if (count % 3 == 0){
+      newString += ',';
+    }
+    newString += population[i];
+    count++;
+  }
+  let newlen = newString.length;
+  population = '';
+  for (let i = newlen - 1; i  > 0; i--){
+    population += newString[i];
+  }
+  return population;
+}
 
 // card mode display
 function checkingModeForCards(){

@@ -20,7 +20,7 @@ let html = `
                     <div>
                         <ul class="material">
                             <li><span>Native language : </span>${nativeName[0][1].official}</li>
-                            <li><span>Popilation : </span>${myCountry.population}</li>
+                            <li><span>Population : </span>${populationDisplay(myCountry)}</li>
                             <li><span>Region : </span>${myCountry.region}</li>
                             <li><span>Sub Region : </span>${myCountry.subregion}</li>
                             <li><span>Capital : </span>${myCountry.capital[0]}</li>
@@ -67,6 +67,7 @@ darkMode.addEventListener('click',()=>{
   if (JSON.parse(storage.getItem('val')) === 1){
     storage.setItem('val',JSON.stringify(0))
     document.querySelector('.back button').style.background = "white";
+    document.querySelector('.back button').style.color = "black";
     document.querySelector('body').classList.remove('blue');
     Array.from(children).forEach((val)=>{
       val.classList.remove('white');
@@ -87,4 +88,24 @@ let backBtn = document.querySelector('.back button');
 backBtn.addEventListener('click',()=>{
     location.href="../index.html";
 })
-console.log(myCountry)
+
+//Population display function
+function populationDisplay(array){
+  let population = String(array.population);
+  let len = population.length;
+  let count = 0;
+  let newString = '';
+  for (let i = len - 1; i > -1; i--){
+    if (count % 3 == 0){
+      newString += ',';
+    }
+    newString += population[i];
+    count++;
+  }
+  let newlen = newString.length;
+  population = '';
+  for (let i = newlen - 1; i  > 0; i--){
+    population += newString[i];
+  }
+  return population;
+}
