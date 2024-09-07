@@ -4,7 +4,6 @@ let myCountry = JSON.parse(localStorage.getItem('mycountry'));
 
 let nativeName = Object.entries(myCountry.name.nativeName);
 let currencies = Object.entries(myCountry.currencies);
-let language = Object.entries(myCountry.languages);
 
 let html = `
         <div class="back">
@@ -29,9 +28,9 @@ let html = `
                     </div>
                     <div>
                         <ul class="material">
+                            <li><span>Languages : </span>${languageFormat(myCountry)}</li>
                             <li><span>Time Zone : </span>${myCountry.timezones[0]}</li>
                             <li><span>Currencies : </span>${currencies[0][1].name}</li>
-                            <li><span>Languages : </span>${language[0][1]}</li>
                             <li><span>UN Member : </span>${myCountry.unMember}</li>
                         </ul>
                     </div>
@@ -108,4 +107,21 @@ function populationDisplay(array){
     population += newString[i];
   }
   return population;
+}
+
+//Language 
+function languageFormat(array) {
+  let language = Object.entries(array.languages);
+  console.log(language);
+  let langFormat = '';
+  let len = language.length;
+  for (let i = 0; i < len; i++){
+    if (i === len - 1){
+      langFormat += language[i][1];
+    }
+    else {
+      langFormat += `${language[i][1]}, ` ;
+    }
+  }
+  return langFormat;
 }

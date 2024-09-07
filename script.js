@@ -17,43 +17,85 @@ api
     let length = response.length;
     displayFilteredCountries(response);
 
+    cardBody = document.body.querySelectorAll(".card-body");
+    card = document.body.querySelectorAll(".card");
+
+    // darkmode checking
+    if (JSON.parse(storage.getItem("val")) === 0) {
+      document.querySelector("body").classList.remove("blue");
+      search.classList.remove("blue");
+      region.classList.remove("blue");
+      region.classList.remove("white");
+      region.classList.remove("border-white");
+      search.classList.remove("white");
+
+      Array.from(children).forEach((val) => {
+        val.classList.remove("white");
+      });
+      Array.from(cardBody).forEach((val) => {
+        val.classList.remove("white");
+        val.classList.remove("blue");
+      });
+      countryInfo(card, length, response);
+    } else {
+      document.querySelector("body").classList.add("blue");
+      search.classList.add("blue");
+      region.classList.add("blue");
+      region.classList.add("white");
+      region.classList.add("border-white");
+      search.classList.add("white");
+
+      Array.from(children).forEach((val) => {
+        val.classList.add("white");
+      });
+      Array.from(cardBody).forEach((val) => {
+        val.classList.add("white");
+        val.classList.add("blue");
+      });
+      countryInfo(card, length, response);
+    }
+
     //Input Search
-    cardBody = document.body.querySelectorAll('.card-body');
-    card = document.body.querySelectorAll('.card');
     search.addEventListener("input", (event) => {
-      if (region.value === "" && search.value === "") { 
+      if (region.value === "" && search.value === "") {
         displayFilteredCountries(response);
-      }
-      else{   
+      } else {
         newArray = [];
         if (region.value === "") {
           for (let i = 0; i < length; i++) {
-            if (response[i].name.common.toLowerCase().includes(event.target.value.toLowerCase())) 
-              {
+            if (
+              response[i].name.common
+                .toLowerCase()
+                .includes(event.target.value.toLowerCase())
+            ) {
               newArray.push(response[i]);
             }
           }
           displayFilteredCountries(newArray);
         } else {
           for (let i = 0; i < selectedArray.length; i++) {
-            if (selectedArray[i].name.common.toLowerCase().includes(event.target.value.toLowerCase())) {
+            if (
+              selectedArray[i].name.common
+                .toLowerCase()
+                .includes(event.target.value.toLowerCase())
+            ) {
               newArray.push(selectedArray[i]);
             }
           }
           displayFilteredCountries(newArray);
         }
       }
-      cardBody = document.body.querySelectorAll('.card-body');
-      card = document.body.querySelectorAll('.card');
+      cardBody = document.body.querySelectorAll(".card-body");
+      card = document.body.querySelectorAll(".card");
       checkingModeForCards(cardBody);
-      countryInfo(card,newArray.length, newArray);
+      countryInfo(card, newArray.length, newArray);
     });
 
     //Region search
     region.addEventListener("change", () => {
-      if (region.value === "" && search.value === "") { 
+      if (region.value === "" && search.value === "") {
         displayFilteredCountries(response);
-      }else{
+      } else {
         selectedArray = [];
         for (let i = 0; i < length; i++) {
           if (region.value === response[i].continents[0]) {
@@ -62,50 +104,12 @@ api
         }
         displayFilteredCountries(selectedArray);
       }
-      cardBody = document.body.querySelectorAll('.card-body');
-      card = document.body.querySelectorAll('.card');
+      cardBody = document.body.querySelectorAll(".card-body");
+      card = document.body.querySelectorAll(".card");
       checkingModeForCards(cardBody);
-      countryInfo(card,selectedArray.length, selectedArray);
-
+      countryInfo(card, selectedArray.length, selectedArray);
     });
-
-    // darkmode checking
-    if (JSON.parse(storage.getItem('val')) === 0){
-      document.querySelector('body').classList.remove('blue');
-      search.classList.remove('blue');
-      region.classList.remove('blue');
-      region.classList.remove('white');
-      region.classList.remove('border-white');
-      search.classList.remove('white');
-      
-      Array.from(children).forEach((val)=>{
-        val.classList.remove('white');
-      })
-      Array.from(cardBody).forEach((val)=>{
-        val.classList.remove('white');
-        val.classList.remove('blue');
-      })
-      countryInfo(card,length,response);
-      
-    }else{
-      document.querySelector('body').classList.add('blue');
-      search.classList.add('blue');
-      region.classList.add('blue');
-      region.classList.add('white');
-      region.classList.add('border-white');
-      search.classList.add('white');
-      
-      Array.from(children).forEach((val)=>{
-        val.classList.add('white');
-      })
-      Array.from(cardBody).forEach((val)=>{
-        val.classList.add('white');
-        val.classList.add('blue');
-      })
-      countryInfo(card,length,response);
-}
   });
-
 
 // Display Function
 function displayFilteredCountries(array) {
@@ -133,52 +137,52 @@ function displayFilteredCountries(array) {
 }
 
 //Storing country info
-function countryInfo(card,length,array){
-  card.forEach((val)=>{
-    val.addEventListener('click',()=>{
+function countryInfo(card, length, array) {
+  card.forEach((val) => {
+    val.addEventListener("click", () => {
       for (let i = 0; i < length; i++) {
         if (array[i].name.common === val.children[1].children[0].innerText) {
-          storage.setItem('mycountry',JSON.stringify(array[i]));
-          location.href="DisplayPage/displaypage.html";
+          storage.setItem("mycountry", JSON.stringify(array[i]));
+          location.href = "DisplayPage/displaypage.html";
         }
       }
-    })
-  })
+    });
+  });
 }
 
 //Population display function
-function populationDisplay(array){
+function populationDisplay(array) {
   let population = String(array.population);
   let len = population.length;
   let count = 0;
-  let newString = '';
-  for (let i = len - 1; i > -1; i--){
-    if (count % 3 == 0){
-      newString += ',';
+  let newString = "";
+  for (let i = len - 1; i > -1; i--) {
+    if (count % 3 == 0) {
+      newString += ",";
     }
     newString += population[i];
     count++;
   }
   let newlen = newString.length;
-  population = '';
-  for (let i = newlen - 1; i  > 0; i--){
+  population = "";
+  for (let i = newlen - 1; i > 0; i--) {
     population += newString[i];
   }
   return population;
 }
 
 // card mode display
-function checkingModeForCards(){
-  if (JSON.parse(storage.getItem('val')) === 0){
-    Array.from(cardBody).forEach((val)=>{
-      val.classList.remove('white');
-      val.classList.remove('blue');
-    })
+function checkingModeForCards() {
+  if (JSON.parse(storage.getItem("val")) === 0) {
+    Array.from(cardBody).forEach((val) => {
+      val.classList.remove("white");
+      val.classList.remove("blue");
+    });
   } else {
-    Array.from(cardBody).forEach((val)=>{
-      val.classList.add('white');
-      val.classList.add('blue');
-    })
+    Array.from(cardBody).forEach((val) => {
+      val.classList.add("white");
+      val.classList.add("blue");
+    });
   }
 }
 
@@ -186,38 +190,38 @@ function checkingModeForCards(){
 let children = document.body.children;
 let darkMode = document.querySelector("#DarkLight");
 
-darkMode.addEventListener('click',()=>{
-  if (JSON.parse(storage.getItem('val')) === 1){
-    storage.setItem('val',JSON.stringify(0))
-    document.querySelector('body').classList.remove('blue');
-    search.classList.remove('blue');
-    region.classList.remove('blue');
-    region.classList.remove('white');
-    search.classList.remove('white');
-    region.classList.remove('border-white');
-    
-    Array.from(children).forEach((val)=>{
-      val.classList.remove('white');
-    })
-    Array.from(cardBody).forEach((val)=>{
-      val.classList.remove('white');
-      val.classList.remove('blue');
-    })
-  }else{
-    storage.setItem('val',JSON.stringify(1))
-    document.querySelector('body').classList.add('blue');
-    search.classList.add('blue');
-    region.classList.add('blue');
-    region.classList.add('white');
-    search.classList.add('white');
-    region.classList.add('border-white');
-    
-    Array.from(children).forEach((val)=>{
-      val.classList.add('white');
-    })
-    Array.from(cardBody).forEach((val)=>{
-      val.classList.add('white');
-      val.classList.add('blue');
-    })
+darkMode.addEventListener("click", () => {
+  if (JSON.parse(storage.getItem("val")) === 1) {
+    storage.setItem("val", JSON.stringify(0));
+    document.querySelector("body").classList.remove("blue");
+    search.classList.remove("blue");
+    region.classList.remove("blue");
+    region.classList.remove("white");
+    search.classList.remove("white");
+    region.classList.remove("border-white");
+
+    Array.from(children).forEach((val) => {
+      val.classList.remove("white");
+    });
+    Array.from(cardBody).forEach((val) => {
+      val.classList.remove("white");
+      val.classList.remove("blue");
+    });
+  } else {
+    storage.setItem("val", JSON.stringify(1));
+    document.querySelector("body").classList.add("blue");
+    search.classList.add("blue");
+    region.classList.add("blue");
+    region.classList.add("white");
+    search.classList.add("white");
+    region.classList.add("border-white");
+
+    Array.from(children).forEach((val) => {
+      val.classList.add("white");
+    });
+    Array.from(cardBody).forEach((val) => {
+      val.classList.add("white");
+      val.classList.add("blue");
+    });
   }
-})
+});
